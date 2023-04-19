@@ -1,12 +1,24 @@
 import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { User } from 'src/user/schemas/user.schema';
+import { Deed } from './schemas/deed.schema';
+import { Model } from 'mongoose';
+import { CreateDeedDto } from './dto/create.deed.dto';
 
 @Injectable()
 export class DeedService {
+  constructor(
+    @InjectModel(User.name) private userModel: Model<User>,
+    @InjectModel(Deed.name) private deedModel: Model<Deed>,
+  ) {}
+
   async getOne() {
     return 'getOne';
   }
-  async create() {
-    return 'create';
+
+  async create(dto: CreateDeedDto): Promise<Deed> {
+    const deed = await this.deedModel.create({ ...dto });
+    return deed;
   }
   async update() {
     return 'update';

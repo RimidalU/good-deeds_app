@@ -8,8 +8,10 @@ import { CreateDeedDto } from './dto/create.deed.dto';
 @Injectable()
 export class DeedService {
   constructor(
-    @InjectModel(User.name) private userModel: Model<User>,
-    @InjectModel(Deed.name) private deedModel: Model<Deed>,
+    @InjectModel(User.name)
+    private userModel: Model<User>,
+    @InjectModel(Deed.name)
+    private deedModel: Model<Deed>,
   ) {}
 
   async getOne() {
@@ -17,7 +19,7 @@ export class DeedService {
   }
 
   async create(dto: CreateDeedDto): Promise<Deed> {
-    const deed = await this.deedModel.create({ ...dto });
+    const deed = await this.deedModel.create({ ...dto, status: 'pending' });
     return deed;
   }
   async update() {

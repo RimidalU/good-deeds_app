@@ -12,7 +12,7 @@ export class Deed {
   description: string;
 
   @Prop()
-  status: string;
+  status: 'pending' | 'in progress' | 'done';
 }
 
 export const DeedSchema = SchemaFactory.createForClass(Deed);

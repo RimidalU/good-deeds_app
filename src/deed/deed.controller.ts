@@ -1,13 +1,22 @@
-import { Controller, Get } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
+import { DeedService } from './deed.service';
+import { CreateDeedDto } from './dto/create.deed.dto';
 
 @Controller('/deed')
 export class DeedController {
+  constructor(private deedService: DeedService) {}
+
   @Get()
   getOne() {
     return 'getOne';
   }
-  create() {
-    return 'create';
+
+  @Post()
+  create(
+    @Body()
+    dto: CreateDeedDto,
+  ) {
+    return this.deedService.create(dto);
   }
   update() {
     return 'update';

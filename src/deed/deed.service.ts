@@ -4,6 +4,7 @@ import { User } from 'src/user/schemas/user.schema';
 import { Deed } from './schemas/deed.schema';
 import { Model, ObjectId } from 'mongoose';
 import { CreateDeedDto } from './dto/create.deed.dto';
+import { UpdateDeedDto } from './dto/update.deed.dto';
 
 @Injectable()
 export class DeedService {
@@ -23,8 +24,9 @@ export class DeedService {
     const deed = await this.deedModel.create({ ...dto, status: 'pending' });
     return deed;
   }
-  async update() {
-    return 'update';
+  async update(id: ObjectId, dto: UpdateDeedDto) {
+    const newDeed = await this.deedModel.findByIdAndUpdate(id, dto);
+    return newDeed;
   }
   async remove(id: ObjectId): Promise<ObjectId> {
     const deed = await this.deedModel.findByIdAndDelete(id);

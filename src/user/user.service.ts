@@ -5,6 +5,7 @@ import { Model, ObjectId } from 'mongoose';
 import { Deed } from 'src/deed/schemas/deed.schema';
 import { CreateUserDto } from './dto/create.user.dto';
 import { UpdateUserDto } from './dto/update.user.dto';
+import { AddDeedDto } from './dto/add.deed.dto';
 
 @Injectable()
 export class UserService {
@@ -38,5 +39,13 @@ export class UserService {
   async getAll(): Promise<User[]> {
     const users = await this.userModel.find();
     return users;
+  }
+
+  async addDeed(dto: AddDeedDto) {
+    const user = await this.userModel.findById(dto.userId);
+    const newDeed = await this.deedModel.create({ ...dto });
+    user.deeds.push(newDeed._id);
+    await user.save();
+    return newDeed;
   }
 }

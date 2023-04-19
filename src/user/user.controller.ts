@@ -11,6 +11,7 @@ import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create.user.dto';
 import { ObjectId } from 'mongoose';
 import { UpdateUserDto } from './dto/update.user.dto';
+import { AddDeedDto } from './dto/add.deed.dto';
 
 @Controller('/user')
 export class UserController {
@@ -39,5 +40,10 @@ export class UserController {
   @Get()
   getAll() {
     return this.userService.getAll();
+  }
+
+  @Post('/deed')
+  addDeed(@Body() dto: AddDeedDto) {
+    return this.userService.addDeed(dto);
   }
 }

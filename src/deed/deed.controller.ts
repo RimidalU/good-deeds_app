@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { DeedService } from './deed.service';
 import { CreateDeedDto } from './dto/create.deed.dto';
 import { ObjectId } from 'mongoose';
@@ -25,8 +25,13 @@ export class DeedController {
   update() {
     return 'update';
   }
-  remove() {
-    return 'remove';
+
+  @Delete(':id')
+  remove(
+    @Param('id')
+    id: ObjectId,
+  ) {
+    return this.deedService.remove(id);
   }
 
   getAllByUserId() {

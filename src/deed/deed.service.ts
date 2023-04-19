@@ -26,8 +26,9 @@ export class DeedService {
   async update() {
     return 'update';
   }
-  async remove() {
-    return 'remove';
+  async remove(id: ObjectId): Promise<ObjectId> {
+    const deed = await this.deedModel.findByIdAndDelete(id);
+    return deed.id;
   }
 
   async getAllByUserId() {

@@ -1,7 +1,16 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create.user.dto';
 import { ObjectId } from 'mongoose';
+import { UpdateUserDto } from './dto/update.user.dto';
 
 @Controller('/user')
 export class UserController {
@@ -17,8 +26,9 @@ export class UserController {
     return this.userService.create(dto);
   }
 
-  update() {
-    return 'update';
+  @Put(':id')
+  update(@Param('id') id: ObjectId, @Body() dto: UpdateUserDto) {
+    return this.userService.update(id, dto);
   }
 
   @Delete(':id')

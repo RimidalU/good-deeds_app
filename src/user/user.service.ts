@@ -4,6 +4,7 @@ import { User } from './schemas/user.schema';
 import { Model, ObjectId } from 'mongoose';
 import { Deed } from 'src/deed/schemas/deed.schema';
 import { CreateUserDto } from './dto/create.user.dto';
+import { UpdateUserDto } from './dto/update.user.dto';
 
 @Injectable()
 export class UserService {
@@ -22,8 +23,9 @@ export class UserService {
     return user;
   }
 
-  async update() {
-    return 'update';
+  async update(id: ObjectId, dto: UpdateUserDto) {
+    const newUser = await this.userModel.findByIdAndUpdate(id, dto);
+    return newUser;
   }
 
   async remove(id: ObjectId): Promise<ObjectId> {

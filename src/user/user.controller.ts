@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create.user.dto';
@@ -38,8 +39,8 @@ export class UserController {
   }
 
   @Get()
-  getAll() {
-    return this.userService.getAll();
+  getAll(@Query('count') count: number, @Query('offset') offset: number) {
+    return this.userService.getAll(count, offset);
   }
 
   @Post('/deed')

@@ -24,7 +24,9 @@ export class UserService {
   }
 
   async update(id: ObjectId, dto: UpdateUserDto) {
-    const newUser = await this.userModel.findByIdAndUpdate(id, dto);
+    const newUser = await this.userModel.findByIdAndUpdate(id, dto, {
+      new: true,
+    });
     return newUser;
   }
 

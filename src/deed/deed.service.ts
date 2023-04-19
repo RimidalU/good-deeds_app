@@ -25,7 +25,9 @@ export class DeedService {
     return deed;
   }
   async update(id: ObjectId, dto: UpdateDeedDto) {
-    const newDeed = await this.deedModel.findByIdAndUpdate(id, dto);
+    const newDeed = await this.deedModel.findByIdAndUpdate(id, dto, {
+      new: true,
+    });
     return newDeed;
   }
   async remove(id: ObjectId): Promise<ObjectId> {

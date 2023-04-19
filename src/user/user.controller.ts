@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create.user.dto';
 import { ObjectId } from 'mongoose';
@@ -20,8 +20,10 @@ export class UserController {
   update() {
     return 'update';
   }
-  remove() {
-    return 'remove';
+
+  @Delete(':id')
+  remove(@Param('id') id: ObjectId) {
+    return this.userService.remove(id);
   }
 
   @Get()

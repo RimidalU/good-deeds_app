@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from 'src/user/schemas/user.schema';
 import { Deed } from './schemas/deed.schema';
-import { Model } from 'mongoose';
+import { Model, ObjectId } from 'mongoose';
 import { CreateDeedDto } from './dto/create.deed.dto';
 
 @Injectable()
@@ -14,8 +14,9 @@ export class DeedService {
     private deedModel: Model<Deed>,
   ) {}
 
-  async getOne() {
-    return 'getOne';
+  async getOne(id: ObjectId): Promise<Deed> {
+    const deed = await this.deedModel.findById(id);
+    return deed;
   }
 
   async create(dto: CreateDeedDto): Promise<Deed> {

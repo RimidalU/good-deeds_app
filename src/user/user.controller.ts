@@ -18,6 +18,16 @@ import { AddDeedDto } from './dto/add.deed.dto';
 export class UserController {
   constructor(private userService: UserService) {}
 
+  @Post('/deed')
+  addDeed(@Body() dto: AddDeedDto) {
+    return this.userService.addDeed(dto);
+  }
+
+  @Get('/search')
+  searchUser(@Query('query') query: string) {
+    return this.userService.searchUser(query);
+  }
+
   @Get(':id')
   getOne(@Param('id') id: ObjectId) {
     return this.userService.getOne(id);
@@ -41,10 +51,5 @@ export class UserController {
   @Get()
   getAll(@Query('count') count: number, @Query('offset') offset: number) {
     return this.userService.getAll(count, offset);
-  }
-
-  @Post('/deed')
-  addDeed(@Body() dto: AddDeedDto) {
-    return this.userService.addDeed(dto);
   }
 }

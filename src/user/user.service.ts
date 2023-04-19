@@ -15,7 +15,9 @@ export class UserService {
   ) {}
 
   async getOne(id: ObjectId): Promise<User> {
-    const user = await this.userModel.findById(id);
+    const user = await this.userModel
+      .findById(id)
+      .populate(['deeds', 'frends']);
     return user;
   }
 

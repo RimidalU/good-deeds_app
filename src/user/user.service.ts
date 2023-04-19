@@ -17,8 +17,8 @@ export class UserService {
   }
 
   async create(dto: CreateUserDto): Promise<User> {
-    const User = await this.userModel.create({ ...dto, deeps: [], frends: [] });
-    return User;
+    const user = await this.userModel.create({ ...dto, deeps: [], frends: [] });
+    return user;
   }
 
   async update() {
@@ -28,7 +28,8 @@ export class UserService {
     return 'remove';
   }
 
-  async getAllByUserId() {
-    return 'getAll';
+  async getAll(): Promise<User[]> {
+    const users = await this.userModel.find();
+    return users;
   }
 }

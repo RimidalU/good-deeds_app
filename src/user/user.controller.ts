@@ -5,7 +5,6 @@ import { CreateUserDto } from './dto/create.user.dto';
 @Controller('/user')
 export class UserController {
   constructor(private userService: UserService) {}
-  @Get()
   getOne() {
     return 'getOne';
   }
@@ -22,7 +21,8 @@ export class UserController {
     return 'remove';
   }
 
+  @Get()
   getAll() {
-    return 'getAll';
+    return this.userService.getAll();
   }
 }

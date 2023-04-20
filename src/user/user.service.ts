@@ -53,7 +53,7 @@ export class UserService {
 
   async searchUser(query: string): Promise<User[]> {
     const users = await this.userModel.find({
-      nickName: { $regex: new RegExp(query) },
+      nickName: { $regex: new RegExp(query, 'i') },
     });
     return users;
   }

@@ -45,8 +45,8 @@ export class UserService {
 
   async addDeed(dto: AddDeedDto) {
     const user = await this.userModel.findById(dto.userId);
-    const newDeed = await this.deedModel.create({ ...dto });
-    user.deeds.push(newDeed._id);
+    const newDeed = await this.deedModel.create({ ...dto, status: 'pending' });
+    user.deeds.push(newDeed.id);
     await user.save();
     return newDeed;
   }

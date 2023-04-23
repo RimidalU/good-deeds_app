@@ -8,9 +8,9 @@ import {
   Put,
   Query,
 } from '@nestjs/common';
-import { UserService } from './user.service';
-import { CreateUserDto } from './dto/create.user.dto';
 import { ObjectId } from 'mongoose';
+
+import { UserService } from './user.service';
 import { UpdateUserDto } from './dto/update.user.dto';
 import { AddDeedDto } from './dto/add.deed.dto';
 
@@ -31,11 +31,6 @@ export class UserController {
   @Get(':id')
   getOne(@Param('id') id: ObjectId) {
     return this.userService.getOne(id);
-  }
-
-  @Post()
-  create(@Body() dto: CreateUserDto) {
-    return this.userService.create(dto);
   }
 
   @Put(':id')

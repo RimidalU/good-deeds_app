@@ -14,10 +14,10 @@ export class AuthService {
     private userService: UserService,
   ) {}
 
-  async registerUser(dto: CreateUserDto): Promise<CreateUserDto> {
+  async signup(dto: CreateUserDto): Promise<CreateUserDto> {
     const isExistUser = await this.userService.searchUniqueUser(dto.email);
     if (isExistUser) throw new BadRequestException(AppError.USER_EXIST);
 
-    return 
+    return this.userService.create(dto);
   }
 }

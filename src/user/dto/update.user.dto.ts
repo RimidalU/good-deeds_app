@@ -1,5 +1,5 @@
 import { Type } from 'class-transformer';
-import { IsOptional, ValidateNested } from 'class-validator';
+import { IsOptional } from 'class-validator';
 import { IsArray, IsString } from 'class-validator';
 import mongoose, { ObjectId } from 'mongoose';
 
@@ -12,9 +12,9 @@ export class UpdateUserDto {
   @IsOptional()
   readonly nickName?: string;
 
-  @IsString()
-  @IsOptional()
-  readonly email?: string;
+  // @IsString()
+  // @IsOptional()
+  // readonly email?: string;
 
   @IsString()
   @IsOptional()
@@ -23,9 +23,9 @@ export class UpdateUserDto {
   @IsArray()
   @Type(() => mongoose.Schema.Types.ObjectId)
   @IsOptional()
-  readonly deeps?: mongoose.Schema.Types.ObjectId[];
+  readonly deeps?: ObjectId[];
 
   @IsArray()
   @Type(() => mongoose.Schema.Types.ObjectId)
-  readonly frends?: mongoose.Schema.Types.ObjectId[];
+  readonly frends?: ObjectId[];
 }

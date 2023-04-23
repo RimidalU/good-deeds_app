@@ -1,12 +1,14 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from './schemas/user.schema';
 import { Model, ObjectId } from 'mongoose';
+import * as bcrypt from 'bcrypt';
+
 import { Deed } from 'src/deed/schemas/deed.schema';
 import { CreateUserDto } from './dto/create.user.dto';
 import { UpdateUserDto } from './dto/update.user.dto';
 import { AddDeedDto } from './dto/add.deed.dto';
-import * as bcrypt from 'bcrypt';
+import { AppError } from 'src/common/errors';
 
 @Injectable()
 export class UserService {
@@ -23,6 +25,9 @@ export class UserService {
   }
 
   async create(dto: CreateUserDto): Promise<User> {
+    const isExixtUser = await this.searchUniqueUser(dto.email);
+    if (isExixtUser) throw new BadRequestException(AppError.USER_EXIST);
+
     const newUserData = {
       ...dto,
       deeps: [],
@@ -35,10 +40,12 @@ export class UserService {
   }
 
   async update(id: ObjectId, dto: UpdateUserDto) {
-    const newUserData = {
-      ...dto,
-      password: await this.hashPassword(dto.password),
-    };
+    const newUserData = dto.password
+      ? {
+          ...dto,
+          password: await this.hashPassword(dto.password),
+        }
+      : dto;
 
     const newUser = await this.userModel.findByIdAndUpdate(id, newUserData, {
       new: true,
@@ -71,7 +78,15 @@ export class UserService {
     return users;
   }
 
+  async searchUniqueUser(email: string): Promise<boolean> {
+    const isUserUnique = await this.userModel.find({
+      email: { $regex: new RegExp(email, 'i') },
+    });
+
+    return isUserUnique.length ? true : false;
+  }
+
   async hashPassword(password: string): Promise<string> {
-    return bcrypt.hash(password, 10);
+    return await bcrypt.hash(password, 10);
   }
 }

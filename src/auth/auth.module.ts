@@ -5,6 +5,7 @@ import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { UserModule } from 'src/user/user.module';
 import { TokenModule } from 'src/token/token.module';
+import { JwtStrategy } from 'src/strategy';
 
 @Module({
   imports: [
@@ -13,6 +14,6 @@ import { TokenModule } from 'src/token/token.module';
     TokenModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService],
+  providers: [AuthService, JwtStrategy],
 })
 export class AuthModule {}

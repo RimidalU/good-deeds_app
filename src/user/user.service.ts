@@ -74,12 +74,12 @@ export class UserService {
     return users;
   }
 
-  async searchUniqueUser(email: string): Promise<boolean> {
-    const isUserUnique = await this.userModel.find({
+  async searchUniqueUser(email: string): Promise<User> {
+    const isUserUnique = await this.userModel.findOne({
       email: { $regex: new RegExp(email, 'i') },
     });
 
-    return isUserUnique.length ? true : false;
+    return isUserUnique;
   }
 
   async hashPassword(password: string): Promise<string> {

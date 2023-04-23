@@ -2,7 +2,7 @@ import { Body, Controller, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from 'src/user/dto/create.user.dto';
 import { LoginUserDto } from './dto/login.user.dto';
-import { User } from 'src/user/schemas/user.schema';
+import { AuthUserResponse } from './response';
 
 @Controller('/auth')
 export class AuthController {
@@ -14,7 +14,7 @@ export class AuthController {
   }
 
   @Post('/login')
-  login(@Body() dto: LoginUserDto): Promise<User> {
+  login(@Body() dto: LoginUserDto): Promise<AuthUserResponse> {
     return this.authService.login(dto);
   }
 }

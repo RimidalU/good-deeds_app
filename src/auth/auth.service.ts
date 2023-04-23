@@ -1,39 +1,42 @@
-import { Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
 
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
 
 import { UserService } from 'src/user/user.service';
 import { CreateUserDto } from 'src/user/dto/create.user.dto';
 import { LoginUserDto } from './dto/login.user.dto';
-import { User } from 'src/user/schemas/user.schema';
 import { AppError } from 'src/common/constants/errors';
+import { TokenService } from 'src/token/token.service';
+import { AuthUserResponse } from './response';
 
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectModel(User.name)
-    private userModel: Model<User>,
     private userService: UserService,
+    private tokenService: TokenService,
   ) {}
 
   async signup(dto: CreateUserDto): Promise<CreateUserDto> {
     const existUser = await this.userService.searchUniqueUser(dto.email);
     if (existUser) throw new BadRequestException(AppError.USER_EXIST);
 
-    return this.userService.create(dto);
+    return await this.userService.create(dto);
   }
 
-  async login(dto: LoginUserDto): Promise<User> {
+  async login(dto: LoginUserDto): Promise<AuthUserResponse> {
     const existUser = await this.userService.searchUniqueUser(dto.email);
-    if (!existUser) throw new BadRequestException(AppError.USER_NOT_EXIST);
+    if (!existUser) {
+      throw new BadRequestException(AppError.USER_NOT_EXIST);
+    }
     const isValidatePassword = await bcrypt.compare(
       dto.password,
       existUser.password,
     );
-    if (!isValidatePassword)
+    if (!isValidatePassword) {
       throw new BadRequestException(AppError.USER_NOT_EXIST);
-    return existUser;
+    }
+    const token = await this.tokenService.generateJwtToken(dto.email);
+
+    return { ...existUser, token };
   }
 }

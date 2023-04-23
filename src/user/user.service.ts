@@ -6,6 +6,7 @@ import { Deed } from 'src/deed/schemas/deed.schema';
 import { CreateUserDto } from './dto/create.user.dto';
 import { UpdateUserDto } from './dto/update.user.dto';
 import { AddDeedDto } from './dto/add.deed.dto';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
@@ -22,12 +23,24 @@ export class UserService {
   }
 
   async create(dto: CreateUserDto): Promise<User> {
-    const user = await this.userModel.create({ ...dto, deeps: [], frends: [] });
+    const newUserData = {
+      ...dto,
+      deeps: [],
+      frends: [],
+      password: await this.hashPassword(dto.password),
+    };
+
+    const user = await this.userModel.create(newUserData);
     return user;
   }
 
   async update(id: ObjectId, dto: UpdateUserDto) {
-    const newUser = await this.userModel.findByIdAndUpdate(id, dto, {
+    const newUserData = {
+      ...dto,
+      password: await this.hashPassword(dto.password),
+    };
+
+    const newUser = await this.userModel.findByIdAndUpdate(id, newUserData, {
       new: true,
     });
     return newUser;
@@ -56,5 +69,9 @@ export class UserService {
       nickName: { $regex: new RegExp(query, 'i') },
     });
     return users;
+  }
+
+  async hashPassword(password: string): Promise<string> {
+    return bcrypt.hash(password, 10);
   }
 }

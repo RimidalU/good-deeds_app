@@ -91,15 +91,14 @@ export class UserService {
     const isUserUnique = await this.userModel.findOne({
       email: { $regex: new RegExp(email, 'i') },
     });
-    const responceData = isUserUnique
-      ? {
-          name: isUserUnique.name,
-          nickName: isUserUnique.nickName,
-          deeds: isUserUnique.deeds,
-          frends: isUserUnique.frends,
-          email: isUserUnique.email,
-        }
-      : isUserUnique;
+    const responceData = {
+      id: isUserUnique.id,
+      name: isUserUnique.name,
+      nickName: isUserUnique.nickName,
+      deeds: isUserUnique.deeds,
+      frends: isUserUnique.frends,
+      email: isUserUnique.email,
+    };
 
     return responceData;
   }

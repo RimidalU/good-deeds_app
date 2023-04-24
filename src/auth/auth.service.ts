@@ -39,6 +39,7 @@ export class AuthService {
     const user = await this.userService.publicUser(dto.email);
 
     const userInfo = {
+      id: user.id,
       nickName: user.nickName,
       email: user.email,
     };

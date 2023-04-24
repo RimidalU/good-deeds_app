@@ -50,7 +50,6 @@ export class UserController {
     return this.userService.remove(id);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get()
   getAll(@Query('count') count: number, @Query('offset') offset: number) {
     return this.userService.getAll(count, offset);

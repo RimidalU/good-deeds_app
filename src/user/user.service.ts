@@ -56,7 +56,12 @@ export class UserService {
   }
 
   async getAll(count = 10, offset = 0): Promise<User[]> {
-    const users = await this.userModel.find().skip(offset).limit(count);
+    const users = await this.userModel
+      .find()
+      .select(['id', 'name', 'nickName'])
+      .skip(offset)
+      .limit(count);
+
     return users;
   }
 

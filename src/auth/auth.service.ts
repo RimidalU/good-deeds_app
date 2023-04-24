@@ -35,8 +35,10 @@ export class AuthService {
     if (!isValidatePassword) {
       throw new BadRequestException(AppError.USER_NOT_EXIST);
     }
+
+    const user = await this.userService.publicUser(dto.email);
     const token = await this.tokenService.generateJwtToken(dto.email);
 
-    return { ...existUser, token };
+    return { ...user, token };
   }
 }

@@ -8,6 +8,7 @@ import { Deed } from 'src/deed/schemas/deed.schema';
 import { CreateUserDto } from './dto/create.user.dto';
 import { UpdateUserDto } from './dto/update.user.dto';
 import { AddDeedDto } from './dto/add.deed.dto';
+import { PublicUserResponse } from './response';
 
 @Injectable()
 export class UserService {
@@ -84,5 +85,22 @@ export class UserService {
 
   async hashPassword(password: string): Promise<string> {
     return await bcrypt.hash(password, 10);
+  }
+
+  async publicUser(email: string): Promise<PublicUserResponse> {
+    const isUserUnique = await this.userModel.findOne({
+      email: { $regex: new RegExp(email, 'i') },
+    });
+    const responceData = isUserUnique
+      ? {
+          name: isUserUnique.name,
+          nickName: isUserUnique.nickName,
+          deeds: isUserUnique.deeds,
+          frends: isUserUnique.frends,
+          email: isUserUnique.email,
+        }
+      : isUserUnique;
+
+    return responceData;
   }
 }

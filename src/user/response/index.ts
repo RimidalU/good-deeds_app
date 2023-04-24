@@ -1,6 +1,6 @@
 import { IsString } from 'class-validator';
 
-export class AuthUserResponse {
+export class PublicUserResponse {
   @IsString()
   readonly name: string;
 
@@ -9,7 +9,4 @@ export class AuthUserResponse {
 
   @IsString()
   readonly email: string;
-
-  @IsString()
-  readonly token: string;
 }
